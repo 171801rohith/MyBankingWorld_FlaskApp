@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyBankingWorld</title>
+  </head>
+  <body>
+    <h1>My Banking World</h1>
+    <nav>
+      <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about">ABOUT</a></li>
+      </ul>
+    </nav>
+    <div>
+      {%block content%}
+      <form action="/login" method="POST">
+        {{options.hidden_tag()}} {{options.user}}
+      </form>
+
+      <form action="/admin/" method="POST">
+        {{options.hidden_tag()}} {{options.admin}}
+      </form>
+      {%endblock content%}
+    </div>
+    {%with messages = get_flashed_messages()%} {%if messages%}
+    <script>
+      alert("{{messages[0]}}");
+    </script>
+    {%endif%} {%endwith%}
+  </body>
+</html>

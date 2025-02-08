@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Banking World</title>
+  </head>
+  <body>
+    <h1>Welcome Admin</h1>
+    <nav>
+      <ul>
+        <li><a href="/">HOME</a></li>
+        <li><a href="/about">ABOUT</a></li>
+      </ul>
+    </nav>
+    <div>
+      {%block content%}
+      <form action="/admin/login" method="POST">
+        {{adminLoginForm.hidden_tag()}} {{adminLoginForm.emailID.label}}
+        {{adminLoginForm.emailID}}
+        <br />
+        <br />
+        {{adminLoginForm.password.label}} {{adminLoginForm.password}}
+        <br />
+        <br />
+        {{adminLoginForm.login}}
+      </form>
+      <form action="/admin/signup" method="POST">
+        {{adminLoginForm.hidden_tag()}} {{adminLoginForm.signup}}
+      </form>
+      {%endblock content%}
+    </div>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <script>
+      alert("{{ messages[0] }}");
+    </script>
+    {% endif %} {% endwith %}
+  </body>
+</html>

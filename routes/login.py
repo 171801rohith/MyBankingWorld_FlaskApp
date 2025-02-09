@@ -1,8 +1,32 @@
-from flask import render_template
+from flask import render_template, flash, redirect, url_for, session
 from app import app, mongodb
-from WTForms.homePage import Options
+from werkzeug.security import check_password_hash
+
+from WTForms.login import LoginForm
 
 
 @app.route("/login", methods=["POST", "GET"])
-def UserLogin():
-    return "<h1>Log</h1>"
+def UserIndex():
+    return render_template("userLogin.html", userLoginForm=LoginForm())
+
+
+@app.route("/userlogin", methods=["POST", "GET"])
+def userLogin():
+    userLoginForm = LoginForm()
+    if userLoginForm.validate_on_submit():
+        emailID = userLoginForm.emailID.data
+        password = userLoginForm.password.data
+
+        userLoginForm.emailID.data = ""
+        userLoginForm.password.data = ""
+
+        user = mongodb.Users.find_one({"EmailID": emailID})
+        if user and check_password_hash(user["Password"], password):
+            session.permanent = True
+            session["emailID"] = emailID
+            return render_template("userOptions.html", name=user["Name"])
+        else:
+            flash(
+                f"Your EmailID - {emailID} not found in Database or Recheck your Password."
+            )
+            return redirect(url_for("userIndex"))

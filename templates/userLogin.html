@@ -1,0 +1,16 @@
+{% extends "layout.html"%} {%block content%}
+<h3>User LogIn Form</h3>
+<form action="/userlogin" method="POST">
+  {{userLoginForm.hidden_tag()}} {{userLoginForm.emailID.label}}
+  {{userLoginForm.emailID}}
+  <br />
+  <br />
+  {{userLoginForm.password.label}} {{userLoginForm.password}}
+  <br />
+  <br />
+  {{userLoginForm.login}}
+</form>
+<form action="/signup" method="POST">
+  {{userLoginForm.hidden_tag()}} {{userLoginForm.signup}}
+</form>
+{%endblock content%}

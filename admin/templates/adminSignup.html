@@ -1,19 +1,16 @@
-{% extends "adminLogin.html" %}
-{%block content%}
+{% extends "adminLogin.html" %} {%block content%}
+<h3>Admin SignIn Form</h3>
 <form action="/admin/signin" method="POST">
-    {{adminSignupForm.hidden_tag()}}
-    {{adminSignupForm.name.label}}
-    {{adminSignupForm.name}}
-    <br/>
-    <br/>
-    {{adminSignupForm.emailID.label}}
-    {{adminSignupForm.emailID}}
-    <br/>
-    <br/>
-    {{adminSignupForm.password.label}}
-    {{adminSignupForm.password}}
-    <br/>
-    <br/>
-    {{adminSignupForm.submit}}
+  {{adminSignupForm.hidden_tag()}} {{adminSignupForm.name.label}}
+  {{adminSignupForm.name}}
+  <br />
+  <br />
+  {{adminSignupForm.emailID.label}} {{adminSignupForm.emailID}}
+  <br />
+  <br />
+  {{adminSignupForm.password.label}} {{adminSignupForm.password}}
+  <br />
+  <br />
+  {{adminSignupForm.submit}}
 </form>
 {%endblock content%}

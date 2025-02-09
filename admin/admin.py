@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 
-from WTForms.Login import LoginForm
-from WTForms.Signup import SignupForm
+from WTForms.login import LoginForm
+from WTForms.signup import SignupForm
 from WTForms.privileges import PrivilegesForm
 
 admin = Blueprint(
@@ -35,8 +35,8 @@ def adminSignin():
         adminSignupForm.name.data = ""
         adminSignupForm.emailID.data = ""
         adminSignupForm.password.data = ""
-        check = mongodb.Admins.find_one({"EmailID": emailID})
-        if check:
+        
+        if mongodb.Admins.find_one({"EmailID": emailID}):
             flash("EmailID Already Exists. Try to Login with your Password.")
             return redirect(url_for("admin.adminIndex"))
         else:

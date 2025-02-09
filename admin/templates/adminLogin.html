@@ -21,6 +21,7 @@
     </nav>
     <div>
       {%block content%}
+      <h3>Admin LogIn Form</h3>
       <form action="/admin/login" method="POST">
         {{adminLoginForm.hidden_tag()}} {{adminLoginForm.emailID.label}}
         {{adminLoginForm.emailID}}

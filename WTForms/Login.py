@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import EmailField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, InputRequired
 
-class AdminLoginForm(FlaskForm):
+class LoginForm(FlaskForm):
     emailID = EmailField("EMAIL ID : ", validators=[DataRequired(), Email()])
     password = PasswordField("PASSWORD : ", validators=[InputRequired()])
     login = SubmitField("LOGIN")

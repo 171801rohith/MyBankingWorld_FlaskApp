@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, flash, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import timedelta
 
-from WTForms.adminLogin import AdminLoginForm
-from WTForms.adminSignup import AdminSignupForm
+from WTForms.Login import LoginForm
+from WTForms.Signup import SignupForm
 from WTForms.privileges import PrivilegesForm
 
 admin = Blueprint(
@@ -14,19 +14,19 @@ admin.permanent_session_lifetime = timedelta(minutes=30)
 
 @admin.route("/", methods=["POST", "GET"])
 def adminIndex():
-    return render_template("login.html", adminLoginForm=AdminLoginForm())
+    return render_template("adminLogin.html", adminLoginForm=LoginForm())
 
 
 @admin.route("/signup", methods=["POST", "GET"])
 def adminSignup():
-    return render_template("signup.html", adminSignupForm=AdminSignupForm())
+    return render_template("adminSignup.html", adminSignupForm=SignupForm())
 
 
 @admin.route("/signin", methods=["POST", "GET"])
 def adminSignin():
     from app import mongodb
 
-    adminSignupForm = AdminSignupForm()
+    adminSignupForm = SignupForm()
     if adminSignupForm.validate_on_submit():
         name = adminSignupForm.name.data
         emailID = adminSignupForm.emailID.data
@@ -51,7 +51,7 @@ def adminSignin():
 def adminLogin():
     from app import mongodb
 
-    adminLoginForm = AdminLoginForm()
+    adminLoginForm = LoginForm()
     if adminLoginForm.validate_on_submit():
         emailID = adminLoginForm.emailID.data
         password = adminLoginForm.password.data

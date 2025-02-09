@@ -1,6 +1,6 @@
 {% extends "layout.html"%} {%block content%}
 <h3>Hi {{name}}, Welcome To User Options</h3>
-<form action="/openAcc" method="POST">
+<form action="/openAccForm" method="POST">
   {{userOptions.hidden_tag()}} {{userOptions.openAccount}}
 </form>
 <form action="" method="POST">

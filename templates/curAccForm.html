@@ -1,0 +1,17 @@
+{% extends "layout.html"%} {%block content%}
+<h3>Enter details For Your Current Account</h3>
+<form action="/curAccForm" method="POST">
+  {{curAccForm.hidden_tag()}} {{curAccForm.name.label}} {{curAccForm.name}}
+  <br />
+  {{curAccForm.pin_number.label}} {{curAccForm.pin_number}}
+  <br />
+  {{curAccForm.reg_no.label}} {{curAccForm.reg_no}}
+  <br />
+  {{curAccForm.web_url.label}} {{curAccForm.web_url}}
+  <br />
+  {{curAccForm.privilege.label}} {{curAccForm.privilege}}
+  {{curAccForm.age.label}} {{curAccForm.age}}
+  <br />
+  {{curAccForm.submit}}
+</form>
+{%endblock content%}

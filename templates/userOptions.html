@@ -1,3 +1,19 @@
-{% extends "layout.html"%} {%block content%} 
+{% extends "layout.html"%} {%block content%}
 <h3>Hi {{name}}, Welcome To User Options</h3>
+<form action="/openAcc" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.openAccount}}
+</form>
+<form action="" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.closeAccount}}
+</form>
+<form action="" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.deposit}}
+</form>
+<form action="" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.withdraw}}
+</form>
+<form action="" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.transfer}}
+</form>
+
 {%endblock content%}

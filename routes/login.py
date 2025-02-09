@@ -3,6 +3,7 @@ from app import app, mongodb
 from werkzeug.security import check_password_hash
 
 from WTForms.login import LoginForm
+from WTForms.userOptions import UserOptions
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -24,7 +25,9 @@ def userLogin():
         if user and check_password_hash(user["Password"], password):
             session.permanent = True
             session["emailID"] = emailID
-            return render_template("userOptions.html", name=user["Name"])
+            return render_template(
+                "userOptions.html", name=user["Name"], userOptions=UserOptions()
+            )
         else:
             flash(
                 f"Your EmailID - {emailID} not found in Database or Recheck your Password."

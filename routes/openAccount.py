@@ -6,7 +6,6 @@ from models.savings import Savings
 from models.current import Current
 
 from WTForms.openAccForm import (
-    OpenAccountForm,
     SavingsAccountForm,
     CurrentAccountForm,
     AccountTypeForm,

@@ -19,7 +19,7 @@ class Current(Account):
 
     def store_in_mongodb(self):
         super().store_in_mongodb("current")
-        mongodb.SavingsAccounts.insert_one(
+        mongodb.CurrentAccounts.insert_one(
             {
                 "Account_Number": self.account_number,
                 "Registration_number": self.registration_number,

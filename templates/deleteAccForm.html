@@ -1,0 +1,9 @@
+{% extends "layout.html"%} {%block content%}
+<h3>Enter details</h3>
+<form action="/deleteAcc" method="POST">
+  {{deleteAccForm.hidden_tag()}} {{deleteAccForm.acc_no.label}}
+  {{deleteAccForm.acc_no}}<br />
+  {{deleteAccForm.pin_no.label}} {{deleteAccForm.pin_no}}<br />
+  {{deleteAccForm.confirm}}
+</form>
+{%endblock content%}

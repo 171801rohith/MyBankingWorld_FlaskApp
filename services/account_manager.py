@@ -30,7 +30,6 @@ class AccountManager:
 
     def close_account(self, acc_no, emailID, pin_no):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
-
         if account and self.validate_pin(acc_no, pin_no):
             if emailID == account["EmailID"]:
                 if not account["Close_date"]:
@@ -43,16 +42,34 @@ class AccountManager:
                             }
                         },
                     )
-                    flash(f"Your Account - {acc_no} has been closed Successfully. You can Re-Activate it anytime.")
+                    flash(
+                        f"Your Account - {acc_no} has been closed Successfully. You can Re-Activate it anytime."
+                    )
                 else:
                     flash(f"Your Account - {acc_no} is already closed.")
             else:
                 flash(
                     f"This Account - {acc_no} is not yours, So not possible to close it."
                 )
-            return None
         else:
             flash(
                 f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to close it."
             )
-            return None
+
+    def delete_account(self, acc_no, pin_no):
+        if self.validate_pin(acc_no, pin_no):
+            result = mongodb.Accounts.delete_one({"Account_Number": str(acc_no)})
+            if result > 0:
+                mongodb.SavingsAccounts.delete_one({"Account_Number": str(acc_no)})
+                mongodb.CurrentAccounts.delete_one({"Account_Number": str(acc_no)})
+                flash(
+                    f"Your Account - {acc_no} has been Deleted Successfully. You can collect your account balance from the cashier."
+                )
+            else:
+                flash(
+                    f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to delete it."
+                )
+        else:
+            flash(
+                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to delete it."
+            )

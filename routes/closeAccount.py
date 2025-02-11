@@ -15,7 +15,9 @@ def closeAccForm():
 
 @app.route("/closeAcc", methods=["POST", "GET"])
 def closeAcc():
-    closeAccForm=AccNoPinNoForm()
+    closeAccForm = AccNoPinNoForm()
     if closeAccForm.validate_on_submit():
-        AccountManager().close_account(closeAccForm.acc_no.data, session.get("emailID"), closeAccForm.pin_no.data)
+        AccountManager().close_account(
+            closeAccForm.acc_no.data, session.get("emailID"), closeAccForm.pin_no.data
+        )
     return redirect(url_for("userOptionsIndex"))

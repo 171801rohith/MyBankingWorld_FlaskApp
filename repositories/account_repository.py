@@ -1,4 +1,4 @@
-from flask_pymongo import PyMongo
+from pymongo import ReturnDocument
 from app import mongodb
 
 
@@ -9,7 +9,7 @@ class AccountRepository:
             {"_id": "account_no"},
             {"$inc": {"latestAccGen": 1}},
             upsert=True,
-            return_document=PyMongo.ReturnDocument.AFTER,
+            return_document=ReturnDocument.AFTER,
         )
         return str(cls.new_account_number["latestAccGen"])
 

@@ -26,7 +26,9 @@ def userLogin():
             session.permanent = True
             session["emailID"] = emailID
             return render_template(
-                "userOptions.html", name=user["Name"], userOptions=UserOptions()
+                "userOptions.html",
+                email=session.get("emailID"),
+                userOptions=UserOptions(),
             )
         else:
             flash(

@@ -1,0 +1,9 @@
+{% extends "layout.html"%} {%block content%}
+<form action="/isActive" method="POST">
+  {{isActiveForm.hidden_tag()}}
+  {{isActiveForm.acc_no.label}}
+  {{isActiveForm.acc_no}}
+  <br />
+  {{isActiveForm.check}}
+</form>
+{%endblock content%}

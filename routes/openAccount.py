@@ -10,7 +10,6 @@ from WTForms.openAccForm import (
     CurrentAccountForm,
     AccountTypeForm,
 )
-from WTForms.userOptions import UserOptions
 
 
 @app.route("/openAccForm", methods=["POST", "GET"])
@@ -57,21 +56,13 @@ def savingsAcc():
             flash(
                 f"Your Savings Account generated Successfully with Account_number - {savings.account_number}."
             )
-            return render_template(
-                "userOptions.html",
-                email=session.get("emailID"),
-                userOptions=UserOptions(),
-            )
+            return redirect(url_for("userOptionsIndex"))
         else:
             flash(
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
 
-    return render_template(
-        "userOptions.html",
-        email=session.get("emailID"),
-        userOptions=UserOptions(),
-    )
+    return redirect(url_for("userOptionsIndex"))
 
 
 @app.route("/curAccForm", methods=["POST", "GET"])
@@ -99,18 +90,10 @@ def currentAcc():
             flash(
                 f"Your Current Account generated Successfully with Account_number - {current.account_number}."
             )
-            return render_template(
-                "userOptions.html",
-                email=session.get("emailID"),
-                userOptions=UserOptions(),
-            )
+            return redirect(url_for("userOptionsIndex"))
         else:
             flash(
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
 
-    return render_template(
-        "userOptions.html",
-        email=session.get("emailID"),
-        userOptions=UserOptions(),
-    )
+    return redirect(url_for("userOptionsIndex"))

@@ -15,5 +15,8 @@
 <form action="" method="POST">
   {{userOptions.hidden_tag()}} {{userOptions.transfer}}
 </form>
+<form action="/checkActive" method="POST">
+  {{userOptions.hidden_tag()}} {{userOptions.check_activity}}
+</form>
 
 {%endblock content%}

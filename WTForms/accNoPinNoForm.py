@@ -3,7 +3,7 @@ from wtforms import PasswordField, IntegerField, SubmitField
 from wtforms.validators import DataRequired, InputRequired, NumberRange
 
 
-class CloseAccForm(FlaskForm):
+class AccNoPinNoForm(FlaskForm):
     acc_no = IntegerField(
         "ACCOUNT NUMBER :", validators=[DataRequired(), NumberRange(min=10000)]
     )

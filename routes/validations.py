@@ -25,10 +25,6 @@ def isAct():
             is False
         ):
             flash(f"Your Account - {isActiveForm.acc_no.data} is Inactive.")
-        else:
-            flash(
-                f"This Account - {isActiveForm.acc_no.data} is not found in the Database, So not possible to view is_active."
-            )
 
         isActiveForm.acc_no.data = ""
     return redirect(url_for("userOptionsIndex"))

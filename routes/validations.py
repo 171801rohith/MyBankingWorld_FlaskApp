@@ -9,6 +9,7 @@ from WTForms.isActive import IsActiveForm
 def isActForm():
     if "emailID" in session:
         return render_template("activityForm.html", isActiveForm=IsActiveForm())
+    return redirect(url_for("UserIndex"))
 
 
 @app.route("/isActive", methods=["POST", "GET"])

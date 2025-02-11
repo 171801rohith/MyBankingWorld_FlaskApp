@@ -1,5 +1,6 @@
 from flask import flash
 from app import mongodb
+from datetime import datetime
 from werkzeug.security import check_password_hash
 
 
@@ -24,5 +25,34 @@ class AccountManager:
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
         if account:
             return check_password_hash(account["Pin_Number"], pin_no)
-        else :
+        else:
             return False
+
+    def close_account(self, acc_no, emailID, pin_no):
+        account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
+
+        if account and self.validate_pin(acc_no, pin_no):
+            if emailID == account["EmailID"]:
+                if not account["Close_date"]:
+                    mongodb.Accounts.update_one(
+                        {"Account_Number": str(acc_no)},
+                        {
+                            "$set": {
+                                "Activity": False,
+                                "Close_date": str(datetime.now().date()),
+                            }
+                        },
+                    )
+                    flash(f"Your Account - {acc_no} has been closed Successfully. You can Re-Activate it anytime.")
+                else:
+                    flash(f"Your Account - {acc_no} is already closed.")
+            else:
+                flash(
+                    f"This Account - {acc_no} is not yours, So not possible to close it."
+                )
+            return None
+        else:
+            flash(
+                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to close it."
+            )
+            return None

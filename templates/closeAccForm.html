@@ -1,0 +1,9 @@
+{% extends "layout.html"%} {%block content%}
+<h3>Enter details</h3>
+<form action="/closeAcc" method="POST">
+  {{closeAccForm.hidden_tag()}} {{closeAccForm.acc_no.label}}
+  {{closeAccForm.acc_no}}<br />
+  {{closeAccForm.pin_no.label}} {{closeAccForm.pin_no}}<br />
+  {{closeAccForm.confirm}}
+</form>
+{%endblock content%}

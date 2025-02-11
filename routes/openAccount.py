@@ -1,7 +1,5 @@
 from flask import render_template, flash, redirect, url_for, session, request
 from app import app, mongodb
-from werkzeug.security import check_password_hash
-from repositories.account_repository import AccountRepository
 from models.savings import Savings
 from models.current import Current
 
@@ -16,6 +14,7 @@ from WTForms.openAccForm import (
 def openAccForm():
     if "emailID" in session:
         return render_template("openAccForm.html", openAccForm=AccountTypeForm())
+    return redirect(url_for("UserIndex"))
 
 
 @app.route("/accForm", methods=["POST", "GET"])

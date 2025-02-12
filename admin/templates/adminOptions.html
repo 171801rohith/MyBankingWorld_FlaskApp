@@ -1,6 +1,8 @@
-{% extends "adminLogin.html" %}
-{%block content%}
+{% extends "adminLogin.html" %} {%block content%}
 <form action="/admin/privilege" method="POST">
-    <button type="submit">Change Privileges Value</button>
+  {{adminOptions.hidden_tag()}} {{adminOptions.privilegeVal}}
+</form>
+<form action="/admin/transactionHistory" method="POST">
+  {{adminOptions.hidden_tag()}} {{adminOptions.trans}}
 </form>
 {%endblock content%}

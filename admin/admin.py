@@ -5,6 +5,8 @@ from datetime import timedelta
 from WTForms.login import LoginForm
 from WTForms.signup import SignupForm
 from WTForms.privileges import PrivilegesForm
+from WTForms.adminOptions import AdminOptions
+
 
 admin = Blueprint(
     "admin", __name__, static_folder="static", template_folder="templates"
@@ -15,6 +17,13 @@ admin.permanent_session_lifetime = timedelta(minutes=30)
 @admin.route("/", methods=["POST", "GET"])
 def adminIndex():
     return render_template("adminLogin.html", adminLoginForm=LoginForm())
+
+
+@admin.route("/adminOptionIndex", methods=["POST", "GET"])
+def adminOptionsIndex():
+    if "emailID" in session:
+        return render_template("adminOptions.html", adminOptions=AdminOptions())
+    return redirect(url_for("adminLogin"))
 
 
 @admin.route("/signup", methods=["POST", "GET"])
@@ -35,7 +44,7 @@ def adminSignin():
         adminSignupForm.name.data = ""
         adminSignupForm.emailID.data = ""
         adminSignupForm.password.data = ""
-        
+
         if mongodb.Admins.find_one({"EmailID": emailID}):
             flash("EmailID Already Exists. Try to Login with your Password.")
             return redirect(url_for("admin.adminIndex"))
@@ -63,7 +72,7 @@ def adminLogin():
         if adminUser and check_password_hash(adminUser["Password"], password):
             session.permanent = True
             session["emailID"] = emailID
-            return render_template("adminOptions.html")
+            return redirect(url_for("admin.adminOptionsIndex"))
         else:
             flash(
                 f"Your EmailID - {emailID} not found in Database or Recheck your Password."
@@ -73,7 +82,9 @@ def adminLogin():
 
 @admin.route("/privilege", methods=["POST", "GET"])
 def privilege():
-    return render_template("changePrivilege.html", privilegesForm=PrivilegesForm())
+    if "emailID" in session:
+        return render_template("changePrivilege.html", privilegesForm=PrivilegesForm())
+    return redirect(url_for("admin.adminOptionsIndex"))
 
 
 @admin.route("/changePrivilege", methods=["POST", "GET"])
@@ -93,4 +104,17 @@ def changePrivilegeValues():
         )
         flash(f"Privileges Updated Successfully.")
 
-    return render_template("adminOptions.html")
+    return redirect(url_for("admin.adminOptionsIndex"))
+
+
+@admin.route("/transactionHistory", methods=["POST", "GET"])
+def view_all_transactions():
+    from app import mongodb
+
+    if "emailID" in session:
+        transactions = mongodb.TransactionsHistory.find({})
+        if transactions:
+            return render_template("transactionHistory.html", transactions=list(transactions))
+        else:
+            flash(f"No transactions available to view")
+    return redirect(url_for("admin.adminOptionsIndex"))

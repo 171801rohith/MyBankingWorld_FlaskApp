@@ -82,3 +82,22 @@ class TransactionManager:
             flash(
                 f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to transfer funds from it."
             )
+
+    def view_all_my_transactions(self, acc_no, pin_no):
+        if AccountManager().validate_pin(acc_no, pin_no):
+            transactions = mongodb.TransactionsHistory.find(
+                {
+                    "$or": [
+                        {"Account_Number": str(acc_no)},
+                        {"Recipient_Account_Number": str(acc_no)},
+                    ]
+                }
+            )
+            if transactions:
+                return list(transactions)
+            else:
+                return False
+        else:
+            flash(
+                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to transfer funds from it."
+            )

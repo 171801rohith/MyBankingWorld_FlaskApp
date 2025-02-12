@@ -1,0 +1,24 @@
+{%extends "layout.html"%} {%block content%}
+<h3>TRANSACTIONS HISTORY</h3>
+<table>
+  <tr>
+    <th><b>ACCOUNT_NUMBER</b></th>
+    <th><b>RECIPIENT_ACCOUNT_NUMBER</b></th>
+    <th><b>TRANSACTION_TYPE</b></th>
+    <th><b>TRANSACTION_AMOUNT</b></th>
+    <th><b>DATE & TIME</b></th>
+  </tr>
+  {%for transaction in transactions%} 
+  <tr>
+    <td>{{transaction.Account_Number}}</td>
+    <td>{{transaction.Recipient_Account_Number}}</td>
+    <td>{{transaction.Transaction_Type}}</td>
+    <td>{{transaction.Transaction_Amount}}</td>
+    <td>{{transaction.Date_Time}}</td>
+  </tr>
+  {%endfor%}
+</table>
+<form action="/userOptionsIndex">
+  <button type="submit">BACK</button>
+</form>
+{%endblock content%}

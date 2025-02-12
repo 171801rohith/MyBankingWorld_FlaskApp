@@ -1,0 +1,9 @@
+{% extends "layout.html"%} {%block content%}
+<h3>Enter details</h3>
+<form action="/transactionHistory" method="POST">
+  {{transHitForm.hidden_tag()}} {{transHitForm.acc_no.label}}
+  {{transHitForm.acc_no}}<br />
+  {{transHitForm.pin_no.label}} {{transHitForm.pin_no}}<br />
+  {{transHitForm.confirm}}
+</form>
+{%endblock content%}

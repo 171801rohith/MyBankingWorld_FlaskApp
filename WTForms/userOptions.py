@@ -10,3 +10,4 @@ class UserOptions(FlaskForm):
     withdraw = SubmitField("Withdraw Funds")
     transfer = SubmitField("Transfer Funds")
     check_activity = SubmitField("Check Account Is_Active")
+    transaction = SubmitField("View My Transactions")

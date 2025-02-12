@@ -1,0 +1,9 @@
+{% extends "layout.html"%} {%block content%}
+<form action="/withdraw" method="POST">
+  {{withdrawForm.hidden_tag()}} {{withdrawForm.acc_no.label}}
+  {{withdrawForm.acc_no}}<br />
+  {{withdrawForm.amount.label}} {{withdrawForm.amount}}<br />
+  {{withdrawForm.pin_no.label}} {{withdrawForm.pin_no}}<br />
+  {{withdrawForm.confirm}}
+</form>
+{%endblock content%}

@@ -1,0 +1,11 @@
+{% extends "layout.html"%} {%block content%}
+<form action="/transfer" method="POST">
+  {{transferForm.hidden_tag()}} {{transferForm.acc_no.label}}
+  {{transferForm.acc_no}}<br />
+  {{transferForm.to_acc_no.label}} {{transferForm.to_acc_no}}<br />
+  {{transferForm.amount.label}} {{transferForm.amount}}<br />
+  {{transferForm.pin_no.label}} {{transferForm.pin_no}}<br />
+  {{transferForm.confirm}}
+</form>
+
+{%endblock content%}

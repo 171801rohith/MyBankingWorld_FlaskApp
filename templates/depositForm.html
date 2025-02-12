@@ -1,0 +1,8 @@
+{% extends "layout.html"%} {%block content%}
+<form action="/deposit" method="POST">
+  {{depositForm.hidden_tag()}} {{depositForm.acc_no.label}}
+  {{depositForm.acc_no}}<br />
+  {{depositForm.amount.label}} {{depositForm.amount}}<br />
+  {{depositForm.confirm}}
+</form>
+{%endblock content%}

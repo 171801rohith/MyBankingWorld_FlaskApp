@@ -112,11 +112,9 @@ def view_all_transactions():
     from app import mongodb
 
     if "emailID" in session:
-        transactions = mongodb.TransactionsHistory.find({})
+        transactions = list(mongodb.TransactionsHistory.find({}))
         if transactions:
-            return render_template(
-                "transactionHistory.html", transactions=list(transactions)
-            )
+            return render_template("transactionHistory.html", transactions=transactions)
         else:
             flash(f"No transactions available to view")
     return redirect(url_for("admin.adminOptionsIndex"))

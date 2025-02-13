@@ -29,4 +29,4 @@ def userLogin():
             flash(
                 f"Your EmailID - {emailID} not found in Database or Recheck your Password."
             )
-            return redirect(url_for("userIndex"))
+    return redirect(url_for("UserIndex"))

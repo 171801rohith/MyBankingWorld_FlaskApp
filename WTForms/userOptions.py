@@ -11,3 +11,5 @@ class UserOptions(FlaskForm):
     transfer = SubmitField("Transfer Funds")
     check_activity = SubmitField("Check Account Is_Active")
     transaction = SubmitField("View My Transactions")
+    acc = SubmitField("View My Accounts")
+

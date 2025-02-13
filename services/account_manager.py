@@ -23,10 +23,7 @@ class AccountManager:
 
     def validate_pin(self, acc_no, pin_no):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
-        if account:
-            return check_password_hash(account["Pin_Number"], pin_no)
-        else:
-            return False
+        return check_password_hash(account["Pin_Number"], pin_no) if account else False
 
     def close_account(self, acc_no, emailID, pin_no):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
@@ -73,3 +70,7 @@ class AccountManager:
             flash(
                 f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to delete it."
             )
+
+    def view_all_my_accounts(self, emailID):
+        accounts = list(mongodb.Accounts.find({"EmailID": emailID}))
+        return accounts if accounts else False

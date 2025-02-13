@@ -114,7 +114,22 @@ def view_all_transactions():
     if "emailID" in session:
         transactions = mongodb.TransactionsHistory.find({})
         if transactions:
-            return render_template("transactionHistory.html", transactions=list(transactions))
+            return render_template(
+                "transactionHistory.html", transactions=list(transactions)
+            )
         else:
             flash(f"No transactions available to view")
+    return redirect(url_for("admin.adminOptionsIndex"))
+
+
+@admin.route("/viewAcc", methods=["POST", "GET"])
+def view_all_accounts():
+    from app import mongodb
+
+    if "emailID" in session:
+        accounts = mongodb.Accounts.find({})
+        if accounts:
+            return render_template("viewAllAccounts.html", accounts=list(accounts))
+        else:
+            flash(f"No Accounts available to view")
     return redirect(url_for("admin.adminOptionsIndex"))

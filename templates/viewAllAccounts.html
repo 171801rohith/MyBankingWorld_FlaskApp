@@ -1,0 +1,29 @@
+{%extends "layout.html"%} {%block content%}
+<h3>ALL ACCOUNTS</h3>
+<table>
+  <tr>
+    <th><b>ACCOUNT_NUMBER</b></th>
+    <th><b>ACCOUNT_TYPE</b></th>
+    <th><b>NAME</b></th>
+    <th><b>EMAILID</b></th>
+    <th><b>PRIVILEGE</b></th>
+    <th><b>ACTIVITY</b></th>
+    <th><b>BALANCE_AMOUNT</b></th>
+    <th><b>OPEN_DATETIME</b></th>
+    <th><b>CLOSE_DATETIME</b></th>
+  </tr>
+  {%for account in accounts%}
+  <tr>
+    <td>{{account.Account_Number}}</td>
+    <td>{{account.Account_type}}</td>
+    <td>{{account.Name}}</td>
+    <td>{{account.EmailID}}</td>
+    <td>{{account.Privilege}}</td>
+    <td>{{account.Activity}}</td>
+    <td>{{account.Balance}}</td>
+    <td>{{account.Open_date}}</td>
+    <td>{{account.Close_date}}</td>
+  </tr>
+  {%endfor%}
+</table>
+{%endblock content%}

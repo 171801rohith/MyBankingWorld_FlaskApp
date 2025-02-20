@@ -1,0 +1,6 @@
+{% extends "adminLogin.html" %} {%block content%}
+<form action="/admin/accReactivate" method="POST">
+  {{reactForm.hidden_tag()}} {{reactForm.acc_no.label}} {{reactForm.acc_no}}<br />
+  {{reactForm.pin_no.label}} {{reactForm.pin_no}} <br />{{reactForm.confirm}}
+</form>
+{%endblock content%}

@@ -8,4 +8,7 @@
 <form action="/admin/viewAcc" method="POST">
   {{adminOptions.hidden_tag()}} {{adminOptions.acc}}
 </form>
+<form action="/admin/accReactivateForm" method="POST">
+  {{adminOptions.hidden_tag()}} {{adminOptions.reactivate}}
+</form>
 {%endblock content%}

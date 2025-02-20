@@ -6,6 +6,7 @@ from WTForms.login import LoginForm
 from WTForms.signup import SignupForm
 from WTForms.privileges import PrivilegesForm
 from WTForms.adminOptions import AdminOptions
+from WTForms.accNoPinNoForm import AccNoPinNoForm
 
 
 admin = Blueprint(
@@ -21,9 +22,9 @@ def adminIndex():
 
 @admin.route("/adminOptionIndex", methods=["POST", "GET"])
 def adminOptionsIndex():
-    if "emailID" in session:
+    if "adminEmailID" in session:
         return render_template("adminOptions.html", adminOptions=AdminOptions())
-    return redirect(url_for("adminLogin"))
+    return redirect(url_for("admin.adminIndex"))
 
 
 @admin.route("/signup", methods=["POST", "GET"])
@@ -53,7 +54,7 @@ def adminSignin():
                 {"Name": name, "EmailID": emailID, "Password": password}
             )
             flash(f"Admin Added Successfully. Your EmailID - {emailID}.")
-            return redirect(url_for("admin.adminIndex"))
+    return redirect(url_for("admin.adminIndex"))
 
 
 @admin.route("/login", methods=["POST", "GET"])
@@ -71,7 +72,7 @@ def adminLogin():
         adminUser = mongodb.Admins.find_one({"EmailID": emailID})
         if adminUser and check_password_hash(adminUser["Password"], password):
             session.permanent = True
-            session["emailID"] = emailID
+            session["adminEmailID"] = emailID
             return redirect(url_for("admin.adminOptionsIndex"))
         else:
             flash(
@@ -82,7 +83,7 @@ def adminLogin():
 
 @admin.route("/privilege", methods=["POST", "GET"])
 def privilege():
-    if "emailID" in session:
+    if "adminEmailID" in session:
         return render_template("changePrivilege.html", privilegesForm=PrivilegesForm())
     return redirect(url_for("admin.adminOptionsIndex"))
 
@@ -111,7 +112,7 @@ def changePrivilegeValues():
 def view_all_transactions():
     from app import mongodb
 
-    if "emailID" in session:
+    if "adminEmailID" in session:
         transactions = list(mongodb.TransactionsHistory.find({}))
         if transactions:
             return render_template("transactionHistory.html", transactions=transactions)
@@ -124,10 +125,43 @@ def view_all_transactions():
 def view_all_accounts():
     from app import mongodb
 
-    if "emailID" in session:
+    if "adminEmailID" in session:
         accounts = mongodb.Accounts.find({})
         if accounts:
             return render_template("viewAllAccounts.html", accounts=list(accounts))
         else:
             flash(f"No Accounts available to view")
+    return redirect(url_for("admin.adminOptionsIndex"))
+
+
+@admin.route("/accReactivateForm", methods=["POST", "GET"])
+def reactivateForm():
+    if "adminEmailID" in session:
+        return render_template("reactivateForm.html", reactForm=AccNoPinNoForm())
+    return redirect(url_for("admin.adminOptionsIndex"))
+
+
+@admin.route("/accReactivate", methods=["POST", "GET"])
+def reactivateAcc():
+    from app import mongodb
+
+    reactForm = AccNoPinNoForm()
+    acc_no = reactForm.acc_no.data
+    pin_no = reactForm.pin_no.data
+
+    if reactForm.validate_on_submit():
+        reactForm.acc_no.data = ""
+        reactForm.pin_no_data = ""
+        account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
+        if account and check_password_hash(account["Pin_Number"], pin_no):
+            if account["Activity"] == True:
+                flash(f"This account - {acc_no} is already active.")
+            else:
+                mongodb.Accounts.update_one(
+                    {"Account_Number": str(acc_no)},
+                    {"$set": {"Activity": True, "Close_date": None}},
+                )
+                flash(f"Account successfully reactivated")
+        else:
+            flash(f"This account - {acc_no} not found in database or wrong pin number.")
     return redirect(url_for("admin.adminOptionsIndex"))

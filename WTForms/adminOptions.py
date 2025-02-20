@@ -7,3 +7,4 @@ class AdminOptions(FlaskForm):
     trans = SubmitField("View All Transactions")
     acc = SubmitField("View All Accounts")
     reactivate = SubmitField("Reactivate Account")
+    logout = SubmitField("Logout")

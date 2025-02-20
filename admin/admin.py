@@ -165,3 +165,11 @@ def reactivateAcc():
         else:
             flash(f"This account - {acc_no} not found in database or wrong pin number.")
     return redirect(url_for("admin.adminOptionsIndex"))
+
+
+@admin.route("/logout", methods=["POST", "GET"])
+def adminLogout():
+    if "adminEmailID" in session:
+        session.pop("adminEmailID")
+        flash("Logged Out Successfully")
+    return redirect(url_for("admin.adminOptionsIndex"))

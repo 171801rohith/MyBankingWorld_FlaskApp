@@ -32,3 +32,11 @@ def view_all_my_accounts():
         else:
             return render_template("viewAllAccounts.html", accounts=accounts)
     return redirect(url_for("userOptionsIndex"))
+
+
+@app.route("/logout", methods=["POST", "GET"])
+def userLogout():
+    if "emailID" in session:
+        session.pop("emailID")
+        flash("Logged Out Successfully")
+    return redirect(url_for("userOptionsIndex"))

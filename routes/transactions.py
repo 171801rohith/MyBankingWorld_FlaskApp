@@ -31,12 +31,9 @@ def transferForm():
 def depositAmount():
     depositForm = DepositForm()
     if depositForm.validate_on_submit():
-        if TransactionManager().deposit_amount(
+        TransactionManager().deposit_amount(
             depositForm.acc_no.data, depositForm.amount.data
-        ):
-            flash(
-                f"Successfully Deposited. Current Balance - ₹{depositForm.amount.data}."
-            )
+        )
     return redirect(url_for("userOptionsIndex"))
 
 

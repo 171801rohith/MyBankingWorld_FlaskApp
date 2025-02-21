@@ -5,6 +5,15 @@ from services.account_manager import AccountManager
 
 
 class TransactionManager:
+    def isActive(self, account):
+        if account["Activity"]:
+            return True
+        else:
+            flash(
+                f"This account - {account["Account_Number"]} is Inactive, So you cannot do any sought of Transactions."
+            )
+            return False
+
     def store_in_mongodb(self, acc_no, to_acc_no, type, amount, time):
         mongodb.TransactionsHistory.insert_one(
             {
@@ -18,7 +27,7 @@ class TransactionManager:
 
     def deposit_amount(self, acc_no, amount, store=True):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
-        if account:
+        if account and self.isActive(account):
             if store:
                 self.store_in_mongodb(
                     str(acc_no), "SELF", "deposit", amount, str(datetime.now())
@@ -27,7 +36,7 @@ class TransactionManager:
             mongodb.Accounts.update_one(
                 {"Account_Number": str(acc_no)}, {"$set": {"Balance": amount}}
             )
-            return True
+            flash(f"Successfully Deposited. Current Balance - ₹{amount}.")
         else:
             flash(
                 f"This Account - {acc_no} is not found in the Database, So not possible to Deposit."
@@ -35,7 +44,11 @@ class TransactionManager:
 
     def withdraw_amount(self, acc_no, pin_no, amount):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
-        if account and AccountManager().validate_pin(acc_no, pin_no):
+        if (
+            account
+            and AccountManager().validate_pin(acc_no, pin_no)
+            and self.isActive(account)
+        ):
             self.store_in_mongodb(
                 str(acc_no), "BANK", "withdraw", amount, str(datetime.now())
             )
@@ -57,7 +70,11 @@ class TransactionManager:
     def transfer_amount(self, acc_no, to_acc_no, pin_no, amount):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
         to_account = mongodb.Accounts.find_one({"Account_Number": str(to_acc_no)})
-        if account and AccountManager().validate_pin(acc_no, pin_no):
+        if (
+            account
+            and AccountManager().validate_pin(acc_no, pin_no)
+            and self.isActive(account)
+        ):
             if to_account:
                 deposit = amount
                 self.store_in_mongodb(

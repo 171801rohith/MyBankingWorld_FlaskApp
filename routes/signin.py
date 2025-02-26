@@ -11,7 +11,7 @@ def UserSignupForm():
 
 
 @app.route("/signin", methods=["POST", "GET"])
-def adminSignin():
+def userSignin():
     userSignupForm = SignupForm()
     if userSignupForm.validate_on_submit():
         name = userSignupForm.name.data
@@ -21,13 +21,16 @@ def adminSignin():
         userSignupForm.name.data = ""
         userSignupForm.emailID.data = ""
         userSignupForm.password.data = ""
-        
+
         if mongodb.Admins.find_one({"EmailID": emailID}):
             flash("EmailID Already Exists. Try to Login with your Password.")
-            return redirect(url_for("UserIndex"))
+
         else:
             mongodb.Users.insert_one(
                 {"Name": name, "EmailID": emailID, "Password": password}
             )
             flash(f"User Added Successfully. Your EmailID - {emailID}.")
-            return redirect(url_for("UserIndex"))
+    else :
+        flash("Only letters are allowed.")
+        return render_template("userSignup.html", userSignupForm=SignupForm())
+    return redirect(url_for("UserIndex"))

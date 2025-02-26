@@ -20,4 +20,7 @@ def closeAcc():
         AccountManager().close_account(
             closeAccForm.acc_no.data, session.get("emailID"), closeAccForm.pin_no.data
         )
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("closeAccForm.html", closeAccForm=AccNoPinNoForm())
     return redirect(url_for("userOptionsIndex"))

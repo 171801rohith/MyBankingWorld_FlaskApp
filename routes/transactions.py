@@ -44,6 +44,9 @@ def withdrawAmount():
         TransactionManager().withdraw_amount(
             withdrawForm.acc_no.data, withdrawForm.pin_no.data, withdrawForm.amount.data
         )
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("withdrawForm.html", withdrawForm=WithdrawForm())
     return redirect(url_for("userOptionsIndex"))
 
 
@@ -57,4 +60,7 @@ def transeferAmount():
             transferForm.pin_no.data,
             transferForm.amount.data,
         )
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("transferForm.html", transferForm=TransferFundsForm())
     return redirect(url_for("userOptionsIndex"))

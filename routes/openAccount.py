@@ -60,7 +60,9 @@ def savingsAcc():
             flash(
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
-
+    else:
+        flash("Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000")
+        return render_template("savAccForm.html", savAccForm=SavingsAccountForm())
     return redirect(url_for("userOptionsIndex"))
 
 
@@ -94,5 +96,7 @@ def currentAcc():
             flash(
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
-
+    else:
+        flash("Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000")
+        return render_template("curAccForm.html", curAccForm=CurrentAccountForm())
     return redirect(url_for("userOptionsIndex"))

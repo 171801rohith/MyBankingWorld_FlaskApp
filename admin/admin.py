@@ -48,12 +48,14 @@ def adminSignin():
 
         if mongodb.Admins.find_one({"EmailID": emailID}):
             flash("EmailID Already Exists. Try to Login with your Password.")
-            return redirect(url_for("admin.adminIndex"))
         else:
             mongodb.Admins.insert_one(
                 {"Name": name, "EmailID": emailID, "Password": password}
             )
             flash(f"Admin Added Successfully. Your EmailID - {emailID}.")
+    else :
+        flash("Only letters are allowed.")
+        return render_template("adminSignup.html", adminSignupForm=SignupForm())
     return redirect(url_for("admin.adminIndex"))
 
 
@@ -164,6 +166,9 @@ def reactivateAcc():
                 flash(f"Account successfully reactivated")
         else:
             flash(f"This account - {acc_no} not found in database or wrong pin number.")
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("reactivateForm.html", reactForm=AccNoPinNoForm())
     return redirect(url_for("admin.adminOptionsIndex"))
 
 

@@ -9,7 +9,7 @@ from wtforms import (
     URLField,
     IntegerField,
 )
-from wtforms.validators import DataRequired, InputRequired, URL, NumberRange
+from wtforms.validators import DataRequired, InputRequired, URL, NumberRange, Regexp
 
 
 class AccountTypeForm(FlaskForm):
@@ -22,8 +22,20 @@ class AccountTypeForm(FlaskForm):
 
 
 class OpenAccountForm(FlaskForm):
-    name = StringField("NAME :", validators=[DataRequired()])
-    pin_number = PasswordField("PIN NUMBER :", validators=[InputRequired()])
+    name = StringField(
+        "NAME :",
+        validators=[
+            DataRequired(),
+            Regexp(r"^[a-zA-Z\s]+$", message="Only letters and spaces are allowed."),
+        ],
+    )
+    pin_number = PasswordField(
+        "PIN NUMBER :",
+        validators=[
+            InputRequired(),
+            Regexp(r"^\d{4,6}$", message="Only 4 to 6 digits are allowed."),
+        ],
+    )
     privilege = RadioField(
         "SELECT PRIVILEGE :",
         choices=[("premium", "PREMIUM"), ("gold", "GOLD"), ("silver", "SILVER")],

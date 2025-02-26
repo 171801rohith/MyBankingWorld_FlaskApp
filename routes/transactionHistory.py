@@ -26,5 +26,7 @@ def transHist():
             )
         else:
             return render_template("transactionHistory.html", transactions=transactions)
-
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("transHitForm.html", transHitForm=AccNoPinNoForm())
     return redirect(url_for("userOptionsIndex"))

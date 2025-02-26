@@ -11,6 +11,11 @@
   {{userSignupForm.password.label}} {{userSignupForm.password}}
   <br />
   <br />
+  {% if userSignupForm.name.errors %}
+  <div style="color: red;">
+      {{ userSignupForm.name.errors[0] }} 
+  </div>
+{% endif %}
   {{userSignupForm.submit}}
 </form>
 {%endblock content%}

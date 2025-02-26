@@ -20,4 +20,7 @@ def deleteAcc():
         AccountManager().delete_account(
             deleteAccForm.acc_no.data, deleteAccForm.pin_no.data
         )
+    else:
+        flash("Enter a valid 4 to 6 digits pin.")
+        return render_template("deleteAccForm.html", deleteAccForm=AccNoPinNoForm())
     return redirect(url_for("userOptionsIndex"))

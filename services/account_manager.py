@@ -56,7 +56,7 @@ class AccountManager:
     def delete_account(self, acc_no, pin_no):
         if self.validate_pin(acc_no, pin_no):
             result = mongodb.Accounts.delete_one({"Account_Number": str(acc_no)})
-            if result > 0:
+            if result != 0:
                 mongodb.SavingsAccounts.delete_one({"Account_Number": str(acc_no)})
                 mongodb.CurrentAccounts.delete_one({"Account_Number": str(acc_no)})
                 flash(

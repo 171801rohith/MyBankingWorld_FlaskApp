@@ -61,4 +61,3 @@ class SavingsAccountForm(OpenAccountForm):
         choices=[("M", "MALE"), ("F", "FEMALE")],
         validators=[DataRequired()],
     )
-    age = IntegerField("AGE :", validators=[DataRequired(), NumberRange(min=18)])

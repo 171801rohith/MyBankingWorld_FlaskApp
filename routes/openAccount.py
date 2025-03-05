@@ -2,6 +2,7 @@ from flask import render_template, flash, redirect, url_for, session, request
 from app import app, mongodb
 from models.savings import Savings
 from models.current import Current
+from datetime import datetime
 
 from WTForms.openAccForm import (
     SavingsAccountForm,
@@ -32,6 +33,15 @@ def accForm():
 def savingsAcc():
     savAccForm = SavingsAccountForm()
     if savAccForm.validate_on_submit():
+        age = int(datetime.now().strftime("%Y")) - int(
+            savAccForm.date_of_birth.data.strftime("%Y")
+        )
+        if age < 18:
+            flash(
+                "Your age is less than 18, You cannot open an account without a Nominee"
+            )
+            return render_template("savAccForm.html", savAccForm=SavingsAccountForm())
+
         savings = Savings(
             savAccForm.name.data,
             session.get("emailID"),
@@ -40,7 +50,7 @@ def savingsAcc():
             savAccForm.privilege.data,
             savAccForm.date_of_birth.data,
             savAccForm.gender.data,
-            savAccForm.age.data,
+            age,
         )
 
         savAccForm.name.data = ""
@@ -49,7 +59,6 @@ def savingsAcc():
         savAccForm.privilege.data = ""
         savAccForm.date_of_birth.data = ""
         savAccForm.gender.data = ""
-        savAccForm.age.data = ""
 
         if savings.store_in_mongodb():
             flash(
@@ -61,7 +70,9 @@ def savingsAcc():
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
     else:
-        flash("Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000")
+        flash(
+            "Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000"
+        )
         return render_template("savAccForm.html", savAccForm=SavingsAccountForm())
     return redirect(url_for("userOptionsIndex"))
 
@@ -97,6 +108,8 @@ def currentAcc():
                 f"Sorry !! Due some reason your Account did not generate. Please Try Again"
             )
     else:
-        flash("Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000")
+        flash(
+            "Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000"
+        )
         return render_template("curAccForm.html", curAccForm=CurrentAccountForm())
     return redirect(url_for("userOptionsIndex"))

@@ -121,46 +121,6 @@ button:hover {
     background: #2980b9;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background: #ffffff;
-}
-
-th, td {
-    padding: 7px 7px;
-    text-align: left;
-}
-
-th {
-    background-color: #f4f4f4;
-    color: #333;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-tr {
-    border-bottom: 1px solid #e0e0e0;
-    transition: background 0.3s ease-in-out;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
-}
-
-td {
-    color: #555;
-}
-
-/* Alternate row styling */
-tr:nth-child(even) {
-    background-color: #fafafa;
-}
-
-
 /* Responsive Design */
 @media (max-width: 768px) {
     h1 {

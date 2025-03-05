@@ -7,7 +7,7 @@ class DepositForm(FlaskForm):
     acc_no = IntegerField(
         "ACCOUNT NUMBER :", validators=[DataRequired(), NumberRange(min=10000)]
     )
-    amount = FloatField("AMOUNT : ₹", validators=[DataRequired(), NumberRange(min=1)])
+    amount = FloatField("AMOUNT : ₹", validators=[InputRequired(), NumberRange(min=1)])
     confirm = SubmitField("CONFIRM")
 
 

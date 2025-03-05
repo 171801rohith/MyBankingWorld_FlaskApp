@@ -34,6 +34,9 @@ def depositAmount():
         TransactionManager().deposit_amount(
             depositForm.acc_no.data, depositForm.amount.data
         )
+    else:
+        flash("Minimum amount to deposit is ₹1.")
+        return render_template("depositForm.html", depositForm=DepositForm())
     return redirect(url_for("userOptionsIndex"))
 
 
@@ -45,6 +48,9 @@ def withdrawAmount():
             withdrawForm.acc_no.data, withdrawForm.pin_no.data, withdrawForm.amount.data
         )
     else:
+        if withdrawForm.amount.data < 1:
+            flash("Minimum amount to withdraw is ₹1.")
+            return render_template("withdrawForm.html", withdrawForm=WithdrawForm())
         flash("Enter a valid 4 to 6 digits pin.")
         return render_template("withdrawForm.html", withdrawForm=WithdrawForm())
     return redirect(url_for("userOptionsIndex"))
@@ -61,6 +67,11 @@ def transeferAmount():
             transferForm.amount.data,
         )
     else:
+        if withdrawForm.amount.data < 1:
+            flash("Minimum amount to transfer is ₹1.")
+            return render_template(
+                "transferForm.html", transferForm=TransferFundsForm()
+            )
         flash("Enter a valid 4 to 6 digits pin.")
         return render_template("transferForm.html", transferForm=TransferFundsForm())
     return redirect(url_for("userOptionsIndex"))

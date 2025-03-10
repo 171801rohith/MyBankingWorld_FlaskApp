@@ -7,6 +7,7 @@ from WTForms.signup import SignupForm
 from WTForms.privileges import PrivilegesForm
 from WTForms.adminOptions import AdminOptions
 from WTForms.accNoPinNoForm import AccNoPinNoForm
+from exceptions.exceptions import BankExceptions
 
 
 admin = Blueprint(
@@ -47,14 +48,14 @@ def adminSignin():
         adminSignupForm.password.data = ""
 
         if mongodb.Admins.find_one({"EmailID": emailID}):
-            flash("EmailID Already Exists. Try to Login with your Password.")
+            flash(BankExceptions.emailAlreadyExists())
         else:
             mongodb.Admins.insert_one(
                 {"Name": name, "EmailID": emailID, "Password": password}
             )
             flash(f"Admin Added Successfully. Your EmailID - {emailID}.")
-    else :
-        flash("Only letters are allowed.")
+    else:
+        flash(BankExceptions.onlyLetters())
         return render_template("adminSignup.html", adminSignupForm=SignupForm())
     return redirect(url_for("admin.adminIndex"))
 
@@ -77,9 +78,7 @@ def adminLogin():
             session["adminEmailID"] = emailID
             return redirect(url_for("admin.adminOptionsIndex"))
         else:
-            flash(
-                f"Your EmailID - {emailID} not found in Database or Recheck your Password."
-            )
+            flash(BankExceptions.emailNotInDB(emailID) + "Or Recheck your Password.")
             return redirect(url_for("admin.adminIndex"))
 
 
@@ -165,7 +164,7 @@ def reactivateAcc():
                 )
                 flash(f"Account successfully reactivated")
         else:
-            flash(f"This account - {acc_no} not found in database or wrong pin number.")
+            flash(BankExceptions.accountNotInDB(acc_no) + BankExceptions.wrongPin())
     else:
         flash("Enter a valid 4 to 6 digits pin.")
         return render_template("reactivateForm.html", reactForm=AccNoPinNoForm())

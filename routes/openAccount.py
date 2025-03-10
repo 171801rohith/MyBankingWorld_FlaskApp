@@ -3,6 +3,7 @@ from app import app, mongodb
 from models.savings import Savings
 from models.current import Current
 from datetime import datetime
+from exceptions.exceptions import BankExceptions
 
 from WTForms.openAccForm import (
     SavingsAccountForm,
@@ -37,9 +38,7 @@ def savingsAcc():
             savAccForm.date_of_birth.data.strftime("%Y")
         )
         if age < 18:
-            flash(
-                "Your age is less than 18, You cannot open an account without a Nominee"
-            )
+            flash(BankExceptions.ageLimit())
             return render_template("savAccForm.html", savAccForm=SavingsAccountForm())
 
         savings = Savings(
@@ -71,7 +70,9 @@ def savingsAcc():
             )
     else:
         flash(
-            "Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000"
+            BankExceptions.pinLength()
+            + BankExceptions.onlyLetters()
+            + BankExceptions.insufficientInitialBalance()
         )
         return render_template("savAccForm.html", savAccForm=SavingsAccountForm())
     return redirect(url_for("userOptionsIndex"))
@@ -109,7 +110,9 @@ def currentAcc():
             )
     else:
         flash(
-            "Pin should 4 to 6 digits. Name should only consist letters. Initial Balance should be greater than ₹1000"
+            BankExceptions.pinLength()
+            + BankExceptions.onlyLetters()
+            + BankExceptions.insufficientInitialBalance()
         )
         return render_template("curAccForm.html", curAccForm=CurrentAccountForm())
     return redirect(url_for("userOptionsIndex"))

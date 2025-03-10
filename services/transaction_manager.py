@@ -2,6 +2,7 @@ from flask import flash
 from app import mongodb
 from datetime import datetime
 from services.account_manager import AccountManager
+from exceptions.exceptions import BankExceptions
 
 
 class TransactionManager:
@@ -9,9 +10,7 @@ class TransactionManager:
         if account["Activity"]:
             return True
         else:
-            flash(
-                f"This account - {account["Account_Number"]} is Inactive, So you cannot do any sought of Transactions."
-            )
+            flash(BankExceptions.accountIsInactive(account["Account_Number"]))
             return False
 
     def store_in_mongodb(self, acc_no, to_acc_no, type, amount, time):
@@ -38,9 +37,7 @@ class TransactionManager:
             )
             flash(f"Successfully Deposited. Current Balance - ₹{amount}.")
         else:
-            flash(
-                f"This Account - {acc_no} is not found in the Database, So not possible to Deposit."
-            )
+            flash(BankExceptions.accountNotInDB(acc_no) + "So not possible to Deposit.")
 
     def withdraw_amount(self, acc_no, pin_no, amount):
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
@@ -60,11 +57,14 @@ class TransactionManager:
                 flash(f"Successful Withdrawal. Current Balance - ₹{amount}.")
             else:
                 flash(
-                    f"Your Account - {acc_no} does not have enough funds. Cannot proceed with the withdrawal."
+                    BankExceptions.insufficientBalance(acc_no)
+                    + "Cannot proceed with the withdrawal."
                 )
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to Withdraw."
+                BankExceptions.accountNotInDB(acc_no)
+                + BankExceptions.wrongPin()
+                + "So not possible to Withdraw."
             )
 
     def transfer_amount(self, acc_no, to_acc_no, pin_no, amount):
@@ -89,15 +89,19 @@ class TransactionManager:
                     flash(f"Successful Transfer. Current Balance - ₹{amount}.")
                 else:
                     flash(
-                        f"Your Account - {acc_no} does not have enough funds. Cannot proceed with the transfer."
+                        BankExceptions.insufficientBalance(acc_no)
+                        + "Cannot proceed with the transfer."
                     )
             else:
                 flash(
-                    f"This Account - {to_acc_no} is not found in the Database , So not possible to transfer funds to it."
+                    BankExceptions.accountNotInDB(to_acc_no)
+                    + "So not possible to transfer funds to it."
                 )
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to transfer funds from it."
+                BankExceptions.accountNotInDB(acc_no)
+                + BankExceptions.wrongPin()
+                + "So not possible to transfer funds from it."
             )
 
     def view_all_my_transactions(self, acc_no, pin_no):
@@ -115,6 +119,8 @@ class TransactionManager:
             return transactions if transactions else False
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to view the transactions."
+                BankExceptions.accountNotInDB(acc_no)
+                + BankExceptions.wrongPin()
+                + "So not possible to view the transactions."
             )
             return False

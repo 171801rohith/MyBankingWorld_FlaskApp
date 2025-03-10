@@ -3,6 +3,8 @@ from app import mongodb
 from datetime import datetime
 from werkzeug.security import check_password_hash
 
+from exceptions.exceptions import BankExceptions
+
 
 class AccountManager:
     def isActive(self, acc_no, emailID):
@@ -17,7 +19,8 @@ class AccountManager:
             return None
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database, So not possible to view is_active."
+                BankExceptions.accountNotInDB(acc_no)
+                + "So not possible to view is_active."
             )
             return None
 
@@ -50,7 +53,9 @@ class AccountManager:
                 )
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to close it."
+                BankExceptions.accountNotInDB(acc_no)
+                + BankExceptions.wrongPin()
+                + "So not possible to close it."
             )
 
     def delete_account(self, acc_no, pin_no):
@@ -64,11 +69,15 @@ class AccountManager:
                 )
             else:
                 flash(
-                    f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to delete it."
+                    BankExceptions.accountNotInDB(acc_no)
+                    + BankExceptions.wrongPin()
+                    + "So not possible to delete it."
                 )
         else:
             flash(
-                f"This Account - {acc_no} is not found in the Database or Wrong Pin_number, So not possible to delete it."
+                BankExceptions.accountNotInDB(acc_no)
+                + BankExceptions.wrongPin()
+                + "So not possible to delete it."
             )
 
     def view_all_my_accounts(self, emailID):

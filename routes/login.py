@@ -3,6 +3,7 @@ from app import app, mongodb
 from werkzeug.security import check_password_hash
 
 from WTForms.login import LoginForm
+from exceptions.exceptions import BankExceptions
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -26,7 +27,5 @@ def userLogin():
             session["emailID"] = emailID
             return redirect(url_for("userOptionsIndex"))
         else:
-            flash(
-                f"Your EmailID - {emailID} not found in Database or Recheck your Password."
-            )
+            flash(BankExceptions.emailNotInDB(emailID))
     return redirect(url_for("UserIndex"))

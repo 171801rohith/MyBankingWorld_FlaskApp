@@ -2,8 +2,8 @@ from flask import render_template, flash, redirect, url_for, session
 from app import app, mongodb
 
 from services.transaction_manager import TransactionManager
-
 from WTForms.accNoPinNoForm import AccNoPinNoForm
+from exceptions.exceptions import BankExceptions
 
 
 @app.route("/transactionHistForm", methods=["POST", "GET"])
@@ -27,6 +27,6 @@ def transHist():
         else:
             return render_template("transactionHistory.html", transactions=transactions)
     else:
-        flash("Enter a valid 4 to 6 digits pin.")
+        flash(BankExceptions.pinLength())
         return render_template("transHitForm.html", transHitForm=AccNoPinNoForm())
     return redirect(url_for("userOptionsIndex"))

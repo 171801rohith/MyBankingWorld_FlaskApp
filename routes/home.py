@@ -1,10 +1,9 @@
 from flask import render_template, session, redirect, url_for, flash
 from app import app, mongodb
-from WTForms.homePage import Options
 
 from services.account_manager import AccountManager
-
 from WTForms.userOptions import UserOptions
+from WTForms.homePage import Options
 
 
 @app.route("/")

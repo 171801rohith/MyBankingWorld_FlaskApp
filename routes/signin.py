@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from app import app, mongodb
 
 from WTForms.signup import SignupForm
+from exceptions.exceptions import BankExceptions
 
 
 @app.route("/signup", methods=["POST", "GET"])
@@ -23,14 +24,14 @@ def userSignin():
         userSignupForm.password.data = ""
 
         if mongodb.Admins.find_one({"EmailID": emailID}):
-            flash("EmailID Already Exists. Try to Login with your Password.")
+            flash(BankExceptions.emailAlreadyExists())
 
         else:
             mongodb.Users.insert_one(
                 {"Name": name, "EmailID": emailID, "Password": password}
             )
             flash(f"User Added Successfully. Your EmailID - {emailID}.")
-    else :
-        flash("Only letters are allowed.")
+    else:
+        flash(BankExceptions.onlyLetters())
         return render_template("userSignup.html", userSignupForm=SignupForm())
     return redirect(url_for("UserIndex"))

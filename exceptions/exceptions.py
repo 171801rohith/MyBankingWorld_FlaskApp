@@ -1,7 +1,7 @@
 class BankExceptions:
     @classmethod
     def dailyLimitReached(cls):
-        return "Sorry you can't proceed with the Transaction as you have reached the daily limit. "
+        return "Sorry you cannot proceed with the Transaction as you have reached the daily limit. "
 
     @classmethod
     def ageLimit(cls):

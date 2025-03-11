@@ -13,6 +13,28 @@ class TransactionManager:
             flash(BankExceptions.accountIsInactive(account["Account_Number"]))
             return False
 
+    def checkDailyLimit(self, acc_no, privilege, amount):
+        curDate = str(datetime.now().strftime("%Y-%m-%d"))
+        total = 0
+        privilege = privilege.upper()
+        privileges = mongodb.Privileges.find_one({})
+        maxLimit = privileges[privilege]
+        transactions = list(
+            mongodb.TransactionsHistory.find({"Account_Number": str(acc_no)})
+        )
+        for transaction in transactions:
+            transDate = transaction["Date_Time"][0:10]
+
+            if curDate == transDate:
+                total += transaction["Transaction_Amount"]
+        total += amount
+        
+        if total > maxLimit:
+            flash(BankExceptions.dailyLimitReached())
+            return False
+        else:
+            return True
+
     def store_in_mongodb(self, acc_no, to_acc_no, type, amount, time):
         mongodb.TransactionsHistory.insert_one(
             {
@@ -45,6 +67,7 @@ class TransactionManager:
             account
             and AccountManager().validate_pin(acc_no, pin_no)
             and self.isActive(account)
+            and self.checkDailyLimit(acc_no, account["Privilege"], amount)
         ):
             self.store_in_mongodb(
                 str(acc_no), "BANK", "withdraw", amount, str(datetime.now())
@@ -74,6 +97,7 @@ class TransactionManager:
             account
             and AccountManager().validate_pin(acc_no, pin_no)
             and self.isActive(account)
+            and self.checkDailyLimit(acc_no, account["Privilege"], amount)
         ):
             if to_account:
                 deposit = amount

@@ -152,7 +152,7 @@ def reactivateAcc():
 
     if reactForm.validate_on_submit():
         reactForm.acc_no.data = ""
-        reactForm.pin_no_data = ""
+        reactForm.pin_no.data = ""
         account = mongodb.Accounts.find_one({"Account_Number": str(acc_no)})
         if account and check_password_hash(account["Pin_Number"], pin_no):
             if account["Activity"] == True:
